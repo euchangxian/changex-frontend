@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Avatar,
   Box,
@@ -8,8 +9,12 @@ import {
   CardContent,
   CardHeader,
   CardActions,
+  Collapse,
   TextField,
+  IconButton,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PostReplies from "./PostReplies";
 import axios from "../apis/axios";
 
 const formatDate = dateString => {
@@ -36,6 +41,18 @@ const headerStyle = {
   display: "flex",
   alignItems: "center",
 };
+
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 export default function Posts({ post }) {
   const [expanded, setExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -100,7 +117,18 @@ export default function Posts({ post }) {
           >
             Reply
           </Button>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+            </ExpandMore>
         </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <PostReplies />
+        </Collapse>
       </Card>
     </Box>
   );
