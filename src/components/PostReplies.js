@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -12,34 +12,45 @@ import {
 } from "@mui/material";
 import axios from "../apis/axios";
 
-export default function PostReplies() {
+export default function PostReplies({ postId, formatDate }) {
+  const [replies, setReplies] = useState([]);
+  const fetchReplies = async () => {
+    axios.get(`/getreplies/${postId}`).then((result) => {
+      setReplies(result.data);
+      console.log(result.data);
+    });
+  };
+
+  useEffect(() => {
+    fetchReplies();
+  }, []);
+
+  const renderBodyText = (body) => {
+    const lines = body.split("\n");
+    return lines.map((line, index) => (
+      <Typography key={index} variant="body1" component="span">
+        {line}
+        <br />
+      </Typography>
+    ));
+  };
+
   return (
     <CardContent>
-      <Typography paragraph>Method:</Typography>
-      <Typography paragraph>
-        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-        aside for 10 minutes.
-      </Typography>
-      <Typography paragraph>
-        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-        medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-        occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-        large plate and set aside, leaving chicken and chorizo in the pan. Add
-        pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and
-        cook, stirring often until thickened and fragrant, about 10 minutes. Add
-        saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-      </Typography>
-      <Typography paragraph>
-        Add rice and stir very gently to distribute. Top with artichokes and
-        peppers, and cook without stirring, until most of the liquid is
-        absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved
-        shrimp and mussels, tucking them down into the rice, and cook again
-        without stirring, until mussels have opened and rice is just tender, 5
-        to 7 minutes more. (Discard any mussels that dont open.)
-      </Typography>
-      <Typography>
-        Set aside off of the heat to let rest for 10 minutes, and then serve.
-      </Typography>
+      {replies.map((reply) => (
+        <Box key={reply._id} marginBottom={2}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar />
+            <Typography variant="body1" style={{ marginLeft: 10 }}>
+              {reply.username}
+            </Typography>
+          </div>
+          {renderBodyText(reply.body)}
+          <Typography variant="caption" color="textSecondary">
+            Date: {formatDate(reply.date)}
+          </Typography>
+        </Box>
+      ))}
     </CardContent>
   );
 }

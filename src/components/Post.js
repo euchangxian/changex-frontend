@@ -124,10 +124,10 @@ export default function Posts({ post }) {
             aria-label="show more"
           >
             <ExpandMoreIcon />
-            </ExpandMore>
+          </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <PostReplies />
+          <PostReplies postId={post._id} formatDate={formatDate} />
         </Collapse>
       </Card>
     </Box>
