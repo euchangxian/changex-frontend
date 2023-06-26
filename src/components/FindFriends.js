@@ -24,19 +24,17 @@ const toastConfig = {
   theme: "colored",
 };
 
-export default function FindFriends() {
+export default function FindFriends({ triggerRefreshFriendsList }) {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-    const [username, setUsername] = useState();
+  const [username, setUsername] = useState();
 
   const fetchUser = async () => {
     console.log("Fetching user...");
-    await axios.get(
-      "/user"
-    ).then(res => {
+    await axios.get("/user").then((res) => {
       setUsername(res.data);
     });
-  }
+  };
 
   useEffect(() => {
     fetchUser();
@@ -75,28 +73,29 @@ export default function FindFriends() {
       })
       .then((res) => {
         toast.success("🦄 Successfully added friend!", toastConfig);
+        triggerRefreshFriendsList();
         console.log(res);
       });
   };
 
-const displayedUsers = filteredUsers
-  .filter((user) => user.username !== username) // Exclude user with matching username
-  .map((user) => (
-    <div key={user._id}>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar />
-        </ListItemAvatar>
-        <ListItemText primary={user.username} />
-        <IconButton
-          aria-label="add friend"
-          onClick={() => handleAddFriend(user._id)}
-        >
-          <Add />
-        </IconButton>
-      </ListItem>
-    </div>
-  ));
+  const displayedUsers = filteredUsers
+    .filter((user) => user.username !== username) // Exclude user with matching username
+    .map((user) => (
+      <div key={user._id}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar />
+          </ListItemAvatar>
+          <ListItemText primary={user.username} />
+          <IconButton
+            aria-label="add friend"
+            onClick={() => handleAddFriend(user._id)}
+          >
+            <Add />
+          </IconButton>
+        </ListItem>
+      </div>
+    ));
 
   return (
     <List
