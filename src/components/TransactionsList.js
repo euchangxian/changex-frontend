@@ -1,61 +1,62 @@
-import * as React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Divider from "@mui/material/Divider";
-import ListSubheader from "@mui/material/ListSubheader";
-import TransactionModal from "./TransactionModal";
-import NewTransactionModal from "./NewTransactionModal";
-import axios from "../apis/axios";
+import {
+  Avatar,
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListSubheader,
+} from "@mui/material";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import CategoryToIcon from "../apis/CategoryToIcon";
+import axios from "../apis/axios";
+import NewTransactionModal from "./NewTransactionModal";
+import TransactionModal from "./TransactionModal";
 
-export default function TransactionsList({ allTransactions, setAllTransactions }) {
+export default function TransactionsList({
+  allTransactions,
+  setAllTransactions,
+}) {
   const fetchTransactions = async () => {
     await axios
       .get(
         "/transactions" // Possibly have to add another argument passing in page number as request parameter.
       )
-      .then((result) => {
+      .then(result => {
         setAllTransactions(result.data);
       });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchTransactions();
   }, []);
 
-  const firstFiveTransactions = allTransactions
-    .slice(0, 5)
-    .map((transaction) => (
-      <div key={transaction._id}>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              {CategoryToIcon(transaction.category)}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={transaction.description}
-            secondary={dayjs(transaction.date).format("ddd, DD MMM YYYY")}
-          />
-          <ListItemText
-            primaryTypographyProps={{
-              style: {
-                textAlign: "right",
-                color: transaction.amount < 0 ? "red" : "green",
-              },
-            }}
-            primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
-              transaction.amount
-            )}`}
-          />
-        </ListItem>
-        <Divider variant="inset" component="li" />
-      </div>
-    ));
+  const firstFiveTransactions = allTransactions.slice(0, 5).map(transaction => (
+    <div key={transaction._id}>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>{CategoryToIcon(transaction.category)}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={transaction.description}
+          secondary={dayjs(transaction.date).format("ddd, DD MMM YYYY")}
+        />
+        <ListItemText
+          primaryTypographyProps={{
+            style: {
+              textAlign: "right",
+              color: transaction.amount < 0 ? "red" : "green",
+            },
+          }}
+          primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
+            transaction.amount
+          )}`}
+        />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+    </div>
+  ));
 
   return (
     <List

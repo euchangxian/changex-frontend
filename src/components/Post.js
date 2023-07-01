@@ -1,6 +1,13 @@
-import { Avatar, Box, Typography, Card, CardContent, CardHeader } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  CardHeader,
+} from "@mui/material";
 
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   const options = { day: "numeric", month: "long", year: "numeric" };
   const formattedDate = new Date(dateString).toLocaleDateString(
     undefined,
@@ -25,7 +32,6 @@ const headerStyle = {
   alignItems: "center",
 };
 export default function Posts({ post }) {
-
   return (
     <Box style={postStyle}>
       <Card key={post._id} variant="outlined">
@@ -48,4 +54,4 @@ export default function Posts({ post }) {
       </Card>
     </Box>
   );
-};
+}

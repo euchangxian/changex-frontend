@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import axios from "../apis/axios";
 import {
+  Avatar,
   Divider,
   List,
-  ListSubheader,
   ListItem,
-  ListItemText,
   ListItemAvatar,
-  Avatar,
+  ListItemText,
+  ListSubheader,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "../apis/axios";
 
 export default function FriendsList() {
   const [friendsList, setFriendsList] = useState([]);
