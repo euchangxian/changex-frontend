@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
-import axios from "../apis/axios";
+import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../apis/axios";
 
 export default function TopBar(props) {
   const handleDrawerToggle = props.handleDrawerToggle;
@@ -13,12 +13,10 @@ export default function TopBar(props) {
 
   const fetchUser = async () => {
     console.log("Fetching user...");
-    await axios.get(
-      "/user"
-    ).then(res => {
+    await axios.get("/user").then(res => {
       setUsername(res.data);
     });
-  }
+  };
 
   useEffect(() => {
     fetchUser();
@@ -27,9 +25,7 @@ export default function TopBar(props) {
   const navigate = useNavigate();
   const handleLogoutButtonClick = async () => {
     console.log("Logging out user...");
-    await axios.post(
-      "/logout"
-    ).then(res => {
+    await axios.post("/logout").then(res => {
       console.log("User logged out successfully!");
       navigate("/");
     });
@@ -49,7 +45,7 @@ export default function TopBar(props) {
           aria-label="open drawer"
           edge="start"
           onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: 'none' } }} // 'sm' refers to the breakpoint size corresponding to small screens
+          sx={{ mr: 2, display: { sm: "none" } }} // 'sm' refers to the breakpoint size corresponding to small screens
         >
           <MenuIcon />
         </IconButton>

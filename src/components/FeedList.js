@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "../apis/axios";
-import Post from "./Post"
+import Post from "./Post";
 
 export default function FeedList() {
   const [pageNumber, setPageNumber] = useState(1);
   const limit = 6;
 
-  const useFeedSearch = (pageNumber) => {
+  const useFeedSearch = pageNumber => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [feedItems, setFeedItems] = useState([]);
@@ -17,13 +17,13 @@ export default function FeedList() {
       setError(false);
       axios
         .get(`/getnextposts/${pageNumber}/${limit}`)
-        .then((result) => {
-          setFeedItems((prevItems) => [...prevItems, ...result.data]);
+        .then(result => {
+          setFeedItems(prevItems => [...prevItems, ...result.data]);
           setHasMore(result.data.length > 0);
           console.log(result.data);
           setLoading(false);
         })
-        .catch((e) => {
+        .catch(e => {
           setError(true);
         });
     }, [pageNumber]);
@@ -34,12 +34,12 @@ export default function FeedList() {
 
   const observer = useRef();
   const lastElementRef = useCallback(
-    (node) => {
+    node => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
+      observer.current = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting && hasMore) {
-          setPageNumber((prevPageNumber) => prevPageNumber + 1);
+          setPageNumber(prevPageNumber => prevPageNumber + 1);
         }
       });
       if (node) observer.current.observe(node);

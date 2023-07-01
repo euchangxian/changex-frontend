@@ -1,21 +1,21 @@
-import * as React from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShareIcon from "@mui/icons-material/Share";
+import { Divider } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import ShareIcon from "@mui/icons-material/Share";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Divider } from "@mui/material";
-import axios from "../apis/axios";
+import Modal from "@mui/material/Modal";
 import dayjs from "dayjs";
-import CategoryToIcon from "../apis/CategoryToIcon";
+import * as React from "react";
 import { toast } from "react-toastify";
+import CategoryToIcon from "../apis/CategoryToIcon";
+import axios from "../apis/axios";
 
 const toastConfig = {
   position: "top-center",
@@ -36,36 +36,42 @@ export default function TransactionModal({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleDeleteTransaction = async (id) => {
-    await axios.delete(`/transactions/${id}`).then((res) => {
+  const handleDeleteTransaction = async id => {
+    await axios.delete(`/transactions/${id}`).then(res => {
       fetchTransactions();
     });
   };
 
-  const handleSharePost = async (transaction) => {
+  const handleSharePost = async transaction => {
     const username = (await axios.get("/user")).data;
+    const action = transaction.amount < 0 ? "spent" : "saved";
+    const amount = Math.abs(transaction.amount);
+
     const body =
       username +
-      " spent $" +
-      -transaction.amount +
+      " " +
+      action +
+      " $" +
+      amount +
       " on " +
       transaction.description +
       ". (" +
       transaction.category +
       ")";
+
     await axios
       .post("/addpost", {
         date: new Date(),
         transactionId: transaction._id,
         body: body,
       })
-      .then((res) => {
+      .then(res => {
         toast.success("🦄 Successfully shared with friends!", toastConfig);
         console.log(res);
       });
   };
 
-  const allTransactionsDisplay = allTransactions.map((transaction) => (
+  const allTransactionsDisplay = allTransactions.map(transaction => (
     <div key={transaction._id}>
       <ListItem>
         <ListItemAvatar>

@@ -1,10 +1,19 @@
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Typography, TextField, FormControlLabel, Button, Checkbox, InputAdornment, IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import LockIcon from '@mui/icons-material/Lock';
-import axios from "../apis/axios";
 import { toast } from "react-toastify";
+import axios from "../apis/axios";
+import LockIcon from '@mui/icons-material/Lock';
 
 const toastConfig = {
   position: "top-center",
@@ -33,18 +42,21 @@ export default function LoginForm() {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    await axios.post("/login/password", {
-      username: username,
-      password: password
-    }).then(res => {
-      if (res.status === 200) {
-        toast.success('🦄 Success!', toastConfig);
-        return navigate("/changex");
-      }
-    }).catch(error => {
-      toast.error('🦄 Wrong username or password!', toastConfig);
-      setPassword("");
-    });
+    await axios
+      .post("/login/password", {
+        username: username,
+        password: password,
+      })
+      .then(res => {
+        if (res.status === 200) {
+          toast.success("🦄 Success!", toastConfig);
+          return navigate("/changex");
+        }
+      })
+      .catch(error => {
+        toast.error("🦄 Wrong username or password!", toastConfig);
+        setPassword("");
+      });
   };
 
   return (
@@ -53,16 +65,20 @@ export default function LoginForm() {
       noValidate
       autoComplete="off"
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        minWidth: 320
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        minWidth: 320,
       }}
       onSubmit={handleSubmit}
     >
-      <Typography align="center" variant="h3" sx={{ padding: 3, color: "" }}>ChangeX</Typography>
-      <LockIcon fontSize='large' />
-      <Typography align="center" variant="h5">Log In</Typography>
+      <Typography align="center" variant="h3" sx={{ padding: 3, color: "" }}>
+        ChangeX
+      </Typography>
+      <LockIcon fontSize="large" />
+      <Typography align="center" variant="h5">
+        Log In
+      </Typography>
       {/* Username text field.*/}
       <TextField
         margin="normal"
@@ -72,7 +88,7 @@ export default function LoginForm() {
         label="User Name"
         placeholder="e.g. Axelly"
         variant="filled"
-        sx={{ mx: 'auto' }}
+        sx={{ mx: "auto" }}
         value={username}
         onChange={e => setUsername(e.target.value)}
       />
@@ -89,33 +105,28 @@ export default function LoginForm() {
         value={password}
         onChange={e => setPassword(e.target.value)}
         InputProps={{
-          endAdornment: <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
         label="Remember me"
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-      >
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Log In
       </Button>
-      <Link to="/signup">
-        {"Don't have an account? Sign Up"}
-      </Link>
+      <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
     </Box>
   );
 }

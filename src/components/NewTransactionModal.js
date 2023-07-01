@@ -1,24 +1,28 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import AddIcon from "@mui/icons-material/Add";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import SavingsIcon from '@mui/icons-material/Savings';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material";
-import dayjs from "dayjs";
+import SavingsIcon from "@mui/icons-material/Savings";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import {
+  Box,
+  Button,
+  IconButton,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Modal,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { useState } from "react";
 import axios from "../apis/axios";
 
 export default function NewTransactionModal() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -27,11 +31,11 @@ export default function NewTransactionModal() {
     setAmount();
   };
 
-  const [transactionType, setTransactionType] = React.useState("spendings");
-  const [date, setDate] = React.useState(dayjs(new Date()));
-  const [category, setCategory] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [amount, setAmount] = React.useState("");
+  const [transactionType, setTransactionType] = useState("spendings");
+  const [date, setDate] = useState(dayjs(new Date()));
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
 
   const handleTransactionType = (event, newTransactionType) => {
     if (newTransactionType != null) {
@@ -39,29 +43,31 @@ export default function NewTransactionModal() {
     }
   };
 
-  const handleDate = (newDate) => {
+  const handleDate = newDate => {
     setDate(newDate);
   };
 
-  const handleDecimalsOnValue = (value) => {
+  const handleDecimalsOnValue = value => {
     const regex = /([0-9]*[\.|\,]{0,1}[0-9]{0,2})/s;
     return value.match(regex)[0];
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     // removed e.preventDefault() to autoclose modal on form submission and trigger re-rendering of transactionListlog(date);
     console.log(category);
     console.log(description);
 
-    await axios.post("/addtransaction", {
-      type: transactionType,
-      date: date,
-      category: category,
-      description: description,
-      amount: transactionType === "spendings" ? -amount : parseInt(amount)
-    }).then(res => {
-      console.log(res);
-    });
+    await axios
+      .post("/addtransaction", {
+        type: transactionType,
+        date: date,
+        category: category,
+        description: description,
+        amount: transactionType === "spendings" ? -amount : parseInt(amount),
+      })
+      .then(res => {
+        console.log(res);
+      });
   };
 
   const categories = [
@@ -162,11 +168,11 @@ export default function NewTransactionModal() {
                 required
                 select
                 sx={{ flexGrow: 1, width: "80%" }}
-                onChange={(event) => {
+                onChange={event => {
                   setCategory(event.target.value);
                 }}
               >
-                {categories.map((option) => (
+                {categories.map(option => (
                   <MenuItem key={option.category} value={option.category}>
                     {option.category}
                   </MenuItem>
@@ -184,7 +190,7 @@ export default function NewTransactionModal() {
                 value={description}
                 required
                 sx={{ flexGrow: 1, width: "80%" }}
-                onChange={(event) => {
+                onChange={event => {
                   setDescription(event.target.value);
                 }}
               />
@@ -198,7 +204,7 @@ export default function NewTransactionModal() {
                 value={amount}
                 required
                 sx={{ flexGrow: 1, width: "80%" }}
-                onChange={(event) => {
+                onChange={event => {
                   setAmount(handleDecimalsOnValue(event.target.value));
                 }}
               />
