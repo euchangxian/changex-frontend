@@ -11,7 +11,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/en-sg";
-
+import { Box } from "@mui/material";
+import './App.styles.css';
 
 export default function App() {
   return (
@@ -24,10 +25,38 @@ export default function App() {
             <Route path="signup" element={<SignUpForm />} />
           </Route>
           <Route path="/changex" element={<ChangeX />}>
-            <Route path="/changex" element={<Home />} />
-            <Route path="/changex/analysis" element={<Analysis />} />
-            <Route path="/changex/friends" element={<Friends />} />
-            <Route path="/changex/feed" element={<Feed/>} />
+            <Route
+              path="/changex"
+              element={
+                <Box className="box-container">
+                  <Home />
+                </Box>
+              }
+            />
+            <Route
+              path="/changex/analysis"
+              element={
+                <Box className="box-container">
+                  <Analysis />
+                </Box>
+              }
+            />
+            <Route
+              path="/changex/friends"
+              element={
+                <Box className="box-container">
+                  <Friends />
+                </Box>
+              }
+            />
+            <Route
+              path="/changex/feed"
+              element={
+                <Box className="box-container">
+                  <Feed />
+                </Box>
+              }
+            />
           </Route>
           <Route path="/*" element={<NoPage />} />
         </Routes>

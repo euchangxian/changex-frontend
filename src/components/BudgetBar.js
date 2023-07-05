@@ -111,10 +111,10 @@ export default function BudgetBar({ allTransactions }) {
   }, [spending, budget]);
 
   return (
-    <Box sx={{ margin: "16px" }}>
+    <Box>
       <Box display="flex" flexDirection="row" alignItems="center" mb={2}>
         <Box flexGrow={1}>
-          <Typography variant="h4">
+          <Typography variant="h4" color="black">
             Your budget for {currentDate.format("MMMM")}
           </Typography>
         </Box>

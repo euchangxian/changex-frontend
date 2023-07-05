@@ -35,7 +35,9 @@ const postStyle = {
   maxWidth: 600,
   margin: "0 auto",
   marginTop: 20,
+  padding: "10px",
 };
+
 
 const headerStyle = {
   display: "flex",
@@ -82,7 +84,7 @@ export default function Posts({ post }) {
 
   return (
     <Box style={postStyle}>
-      <Card key={post._id} variant="outlined">
+      <Card key={post._id} sx={{ backgroundColor: "#eaf0ff", padding: "10px" }}>
         <CardHeader
           title={
             <div style={headerStyle}>
@@ -107,6 +109,7 @@ export default function Posts({ post }) {
             value={inputValue}
             onChange={handleInputChange}
             fullWidth
+            sx={{ marginTop: "30px", marginBottom: "10px" }}
           />
         </CardContent>
         <CardActions>

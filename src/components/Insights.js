@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "../apis/axios";
 import dayjs from "dayjs";
 import {
+  Typography,
   Box,
   List,
   ListItem,
   ListItemText,
-  ListSubheader,
   ListItemAvatar,
   Avatar,
 } from "@mui/material";
@@ -69,17 +69,8 @@ export default function Insights() {
 
   return (
     <Box>
-      <List
-        subheader={
-          <ListSubheader
-            component="div"
-            id="list-header"
-            sx={{ fontSize: "28px", color: "black" }}
-          >
-            Insights
-          </ListSubheader>
-        }
-      >
+      <Typography variant="h4">Insights</Typography>
+      <List>
         {insightsList.length ? (
           insightsList
         ) : (

@@ -5,9 +5,10 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  Avatar,
+  Divider,
   ListItemText,
-  ListSubheader,
-  TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -59,12 +60,12 @@ export default function FindFriends({ triggerRefreshFriendsList }) {
 
   const filteredUsers = users
     .filter((user) => user.username.toLowerCase().includes(searchTerm))
-    .slice(0, 5);
+    .slice(0, 6);
 
   const handleAddFriend = async (friendId) => {
     const isFriend = await axios.get(`/checkfriend/${friendId}`);
     if (isFriend.data === true) {
-      toast.info("You are already friends!");
+      toast.info("You are already following this user!");
       return;
     }
     axios
@@ -72,7 +73,7 @@ export default function FindFriends({ triggerRefreshFriendsList }) {
         friendId: friendId,
       })
       .then((res) => {
-        toast.success("🦄 Successfully added friend!", toastConfig);
+        toast.success("🦄 Successfully followed user!", toastConfig);
         triggerRefreshFriendsList();
         console.log(res);
       });
@@ -88,44 +89,47 @@ export default function FindFriends({ triggerRefreshFriendsList }) {
           </ListItemAvatar>
           <ListItemText primary={user.username} />
           <IconButton
-            aria-label="add friend"
+            aria-label="follow user"
             onClick={() => handleAddFriend(user._id)}
           >
             <Add />
           </IconButton>
         </ListItem>
+        <Divider />
       </div>
     ));
 
   return (
-    <List
-      sx={{
-        width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
-      }}
-      subheader={
-        <ListSubheader
-          component="div"
-          id="list-header"
-          sx={{ fontSize: "28px", color: "black" }}
+    <>
+      <Typography variant="h4" color="black">
+        Follow users
+      </Typography>
+      <List
+        sx={{
+          width: "100%",
+          backgroundColor: "paleblue",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "10px",
+          }}
         >
-          Add Friends
-        </ListSubheader>
-      }
-    >
-      <div style={{ display: "flex", alignItems: "center", width: "90%" }}>
-        <TextField
-          type="text"
-          placeholder="Search by username"
-          onChange={handleSearch}
-          fullWidth
-        />
-        <IconButton>
-          <Search />
-        </IconButton>
-      </div>
-      {displayedUsers}
-    </List>
+          <TextField
+            type="text"
+            placeholder="Search by username"
+            onChange={handleSearch}
+            fullWidth
+          />
+          <IconButton>
+            <Search />
+          </IconButton>
+        </div>
+        {displayedUsers}
+      </List>
+    </>
   );
 }

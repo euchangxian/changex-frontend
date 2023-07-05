@@ -4,8 +4,8 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
-  ListSubheader,
+  Avatar,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "../apis/axios";
@@ -38,23 +38,16 @@ export default function FriendsList({ refreshFriendsList }) {
   });
 
   return (
+    <>
+    <Typography variant="h4" color="black">Followed users</Typography>
     <List
       sx={{
         width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
+        backgroundColor: "paleblue",
       }}
-      subheader={
-        <ListSubheader
-          component="div"
-          id="list-header"
-          sx={{ fontSize: "28px", color: "black" }}
-        >
-          Your Friends
-        </ListSubheader>
-      }
     >
       {renderFriendsList}
     </List>
+    </>
   );
 }
