@@ -74,7 +74,7 @@ export default function BudgetSpendingChart() {
   return (
     <Box>
       <Box display="flex">
-        <Typography variant="h4">Spending/ Expenditure</Typography>
+        <Typography variant="h4">Spending/ Budget</Typography>
         <Select value={selectedYear} onChange={handleYearChange}>
           {yearRange.map(year => (
             <MenuItem key={year} value={year}>

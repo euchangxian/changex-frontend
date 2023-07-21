@@ -42,9 +42,7 @@ export default function TransactionsList({
           </div>
           <div style={{ flex: 1 }}>
             <ListItemText
-              primary={dayjs(transaction.date).format(
-                "ddd, DD MMM YYYY,  HH:mm:ss"
-              )}
+              primary={dayjs(transaction.date).format("ddd, DD MMM YYYY")}
             />
           </div>
           <div style={{ flex: 1 }}>

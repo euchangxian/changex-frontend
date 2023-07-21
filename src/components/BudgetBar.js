@@ -37,7 +37,7 @@ export default function BudgetBar({ allTransactions }) {
       // Handle the submission of invalid budget
       setBudgetInput("");
       return toast.error(
-        "Invalid budget. Enter only positive numeric values -.-"
+        "Invalid budget. Enter a different budget that is a positive numeric value -.-"
       );
       // When there is no budget, it is set to 0. So if budget is set to zero, then addBudget/
       // No allowed to add / update budget to 0.
