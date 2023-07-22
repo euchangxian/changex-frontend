@@ -38,12 +38,6 @@ export default function NavBar(props) {
           </ListItemIcon>
           <ListItemText primary="Analysis" />
         </ListItemButton>
-        <ListItemButton component={Link} to="nopage">
-          <ListItemIcon>
-            <Flag />
-          </ListItemIcon>
-          <ListItemText primary="Goals" />
-        </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton component={Link} to="friends">
           <ListItemIcon>
