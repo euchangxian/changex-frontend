@@ -1,21 +1,21 @@
-import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ShareIcon from "@mui/icons-material/Share";
-import { Divider } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
+import * as React from "react";
 import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import Modal from "@mui/material/Modal";
-import dayjs from "dayjs";
-import * as React from "react";
-import { toast } from "react-toastify";
-import CategoryToIcon from "../apis/CategoryToIcon";
+import ShareIcon from "@mui/icons-material/Share";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Divider } from "@mui/material";
 import axios from "../apis/axios";
+import dayjs from "dayjs";
+import CategoryToIcon from "../apis/CategoryToIcon";
+import { toast } from "react-toastify";
 
 const toastConfig = {
   position: "top-center",
@@ -42,46 +42,43 @@ export default function TransactionModal({
     });
   };
 
-const handleSharePost = async (transaction) => {
-  const username = (await axios.get("/user")).data;
-  let body = "";
+  const handleSharePost = async transaction => {
+    const username = (await axios.get("/user")).data;
+    let body = "";
 
-  if (transaction.amount < 0) {
-    body =
-      username +
-      " " +
-      action +
-      " $" +
-      amount +
-      " on " +
-      transaction.description +
-      ". (" +
-      transaction.category +
-      ")";
-  } else {
-    body =
-      username +
-      " received $" +
-      transaction.amount +
-      " from " +
-      transaction.description +
-      ". (" +
-      transaction.category +
-      ")";
-  }
+    if (transaction.amount < 0) {
+      body =
+        username +
+        " spent $" +
+        -transaction.amount +
+        " on " +
+        transaction.description +
+        ". (" +
+        transaction.category +
+        ")";
+    } else {
+      body =
+        username +
+        " received $" +
+        transaction.amount +
+        " from " +
+        transaction.description +
+        ". (" +
+        transaction.category +
+        ")";
+    }
 
-  await axios
-    .post("/addpost", {
-      date: new Date(),
-      transactionId: transaction._id,
-      body: body,
-    })
-    .then((res) => {
-      toast.success("🦄 Successfully shared with followers!", toastConfig);
-      console.log(res);
-    });
-};
-
+    await axios
+      .post("/addpost", {
+        date: new Date(),
+        transactionId: transaction._id,
+        body: body,
+      })
+      .then(res => {
+        toast.success("🦄 Successfully shared with followers!", toastConfig);
+        console.log(res);
+      });
+  };
 
   const allTransactionsDisplay = allTransactions.map(transaction => (
     <div key={transaction._id}>

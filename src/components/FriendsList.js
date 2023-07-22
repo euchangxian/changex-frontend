@@ -4,7 +4,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  Avatar,
+  ListItemText,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
