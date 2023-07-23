@@ -21,7 +21,7 @@ export default function TransactionsList({
       .get(
         "/transactions" // Possibly have to add another argument passing in page number as request parameter.
       )
-      .then((result) => {
+      .then(result => {
         setAllTransactions(result.data);
       });
   };
@@ -30,44 +30,40 @@ export default function TransactionsList({
     fetchTransactions();
   }, []);
 
-  const firstFiveTransactions = allTransactions
-    .slice(0, 5)
-    .map((transaction) => (
-      <div key={transaction._id} style={{ width: "100%" }}>
-        <ListItem style={{ display: "flex", alignItems: "center" }}>
-          <ListItemAvatar>
-            <Avatar>{CategoryToIcon(transaction.category)}</Avatar>
-          </ListItemAvatar>
-          <div style={{ display: "flex", flex: 1 }}>
-            <div style={{ flex: 3 }}>
-              <ListItemText primary={transaction.description} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <ListItemText
-                primary={dayjs(transaction.date).format(
-                  "ddd, DD MMM YYYY"
-                )}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <ListItemText
-                primaryTypographyProps={{
-                  style: {
-                    textAlign: "right",
-                    color: transaction.amount < 0 ? "red" : "green",
-                  },
-                }}
-                primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
-                  transaction.amount
-                )}`}
-              />
-            </div>
+  const firstFiveTransactions = allTransactions.slice(0, 5).map(transaction => (
+    <div key={transaction._id} style={{ width: "100%" }}>
+      <ListItem style={{ display: "flex", alignItems: "center" }}>
+        <ListItemAvatar>
+          <Avatar>{CategoryToIcon(transaction.category)}</Avatar>
+        </ListItemAvatar>
+        <div style={{ display: "flex", flex: 1 }}>
+          <div style={{ flex: 3 }}>
+            <ListItemText primary={transaction.description} />
           </div>
-        </ListItem>
+          <div style={{ flex: 1 }}>
+            <ListItemText
+              primary={dayjs(transaction.date).format("ddd, DD MMM YYYY")}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <ListItemText
+              primaryTypographyProps={{
+                style: {
+                  textAlign: "right",
+                  color: transaction.amount < 0 ? "red" : "green",
+                },
+              }}
+              primary={`${transaction.amount < 0 ? "-" : ""}$${Math.abs(
+                transaction.amount
+              )}`}
+            />
+          </div>
+        </div>
+      </ListItem>
 
-        <Divider variant="inset" component="li" />
-      </div>
-    ));
+      <Divider variant="inset" component="li" />
+    </div>
+  ));
 
   return (
     <>
@@ -81,7 +77,7 @@ export default function TransactionsList({
         }}
       >
         <ListItem>
-          <NewTransactionModal />
+          <NewTransactionModal fetchTransactions={fetchTransactions} />
         </ListItem>
         {firstFiveTransactions}
         <ListItem sx={{ justifyContent: "center" }}>

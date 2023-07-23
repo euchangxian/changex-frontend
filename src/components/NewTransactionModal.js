@@ -10,14 +10,14 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import SavingsIcon from '@mui/icons-material/Savings';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SavingsIcon from "@mui/icons-material/Savings";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "../apis/axios";
 
-export default function NewTransactionModal() {
+export default function NewTransactionModal({ fetchTransactions }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -39,29 +39,33 @@ export default function NewTransactionModal() {
     }
   };
 
-  const handleDate = (newDate) => {
+  const handleDate = newDate => {
     setDate(newDate);
   };
 
-  const handleDecimalsOnValue = (value) => {
+  const handleDecimalsOnValue = value => {
     const regex = /([0-9]*[\.|\,]{0,1}[0-9]{0,2})/s;
     return value.match(regex)[0];
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     // removed e.preventDefault() to autoclose modal on form submission and trigger re-rendering of transactionListlog(date);
     console.log(category);
     console.log(description);
-
-    await axios.post("/addtransaction", {
-      type: transactionType,
-      date: date,
-      category: category,
-      description: description,
-      amount: transactionType === "spendings" ? -amount : parseInt(amount)
-    }).then(res => {
-      console.log(res);
-    });
+    e.preventDefault();
+    await axios
+      .post("/addtransaction", {
+        type: transactionType,
+        date: date,
+        category: category,
+        description: description,
+        amount: transactionType === "spendings" ? -amount : parseInt(amount),
+      })
+      .then(res => {
+        console.log(res);
+        fetchTransactions();
+        handleClose();
+      });
   };
 
   const categories = [
@@ -162,11 +166,11 @@ export default function NewTransactionModal() {
                 required
                 select
                 sx={{ flexGrow: 1, width: "80%" }}
-                onChange={(event) => {
+                onChange={event => {
                   setCategory(event.target.value);
                 }}
               >
-                {categories.map((option) => (
+                {categories.map(option => (
                   <MenuItem key={option.category} value={option.category}>
                     {option.category}
                   </MenuItem>
@@ -184,7 +188,7 @@ export default function NewTransactionModal() {
                 value={description}
                 required
                 sx={{ flexGrow: 1, width: "80%" }}
-                onChange={(event) => {
+                onChange={event => {
                   setDescription(event.target.value);
                 }}
               />
@@ -198,7 +202,7 @@ export default function NewTransactionModal() {
                 value={amount}
                 required
                 sx={{ flexGrow: 1, width: "80%" }}
-                onChange={(event) => {
+                onChange={event => {
                   setAmount(handleDecimalsOnValue(event.target.value));
                 }}
               />
