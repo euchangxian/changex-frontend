@@ -17,7 +17,7 @@ export default function Insights() {
   const currMonth = dayjs();
 
   const getInsights = () => {
-    axios.get(`/comparespending/${currMonth}`).then(result => {
+    axios.get(`/comparespending/${currMonth}`).then((result) => {
       setData(result.data);
     });
   };
@@ -26,7 +26,7 @@ export default function Insights() {
     getInsights();
   }, []);
 
-  const insightsList = data.map(insight => {
+  const insightsList = data.map((insight) => {
     if (insight.delta > 10) {
       return (
         <ListItem key={insight.name}>

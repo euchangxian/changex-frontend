@@ -17,7 +17,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PostReplies from "./PostReplies";
 import axios from "../apis/axios";
 
-const formatDate = dateString => {
+const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
   const formattedDate = new Date(dateString).toLocaleDateString(
     undefined,

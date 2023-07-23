@@ -1,16 +1,12 @@
-import PublishIcon from "@mui/icons-material/Publish";
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  LinearProgress,
-  TextField,
-  Typography,
-} from "@mui/material";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import axios from "../apis/axios";
+import { toast } from "react-toastify";
+import dayjs from "dayjs";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import PublishIcon from "@mui/icons-material/Publish";
 
 export default function BudgetBar({ allTransactions }) {
   const currentDate = dayjs();
@@ -21,12 +17,12 @@ export default function BudgetBar({ allTransactions }) {
   const [onTrackPct, setOnTrackPct] = useState(0);
   const [budgetInput, setBudgetInput] = useState("");
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const value = event.target.value;
     setBudgetInput(value);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const newBudget = parseInt(budgetInput);
     if (
@@ -52,12 +48,12 @@ export default function BudgetBar({ allTransactions }) {
     const date = currentDate;
     await axios
       .get(`/getspending/${date}`)
-      .then(result => {
+      .then((result) => {
         if (result.status === 200) {
           setSpending(-result.data);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error("Failed to get spending!");
       });
   };
@@ -66,33 +62,33 @@ export default function BudgetBar({ allTransactions }) {
     const date = currentDate;
     await axios
       .get(`/getbudget/${date}`)
-      .then(result => {
+      .then((result) => {
         if (result.status === 200) {
           setBudget(result.data);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error("Failed to get budget!");
       });
   };
 
-  const addBudget = async amount => {
+  const addBudget = async (amount) => {
     const date = currentDate;
     await axios
       .post(`/addbudget`, {
         date: date,
         amount: amount,
       })
-      .then(result => {
+      .then((result) => {
         getBudget();
       });
   };
 
-  const updateBudget = async amount => {
+  const updateBudget = async (amount) => {
     const date = currentDate;
     await axios
       .post(`/updatebudget/${date}`, { newAmount: amount })
-      .then(result => {
+      .then((result) => {
         getBudget();
       });
     setBudgetInput("");

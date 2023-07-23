@@ -36,51 +36,52 @@ export default function TransactionModal({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleDeleteTransaction = async id => {
-    await axios.delete(`/transactions/${id}`).then(res => {
+  const handleDeleteTransaction = async (id) => {
+    await axios.delete(`/transactions/${id}`).then((res) => {
       fetchTransactions();
     });
   };
 
-  const handleSharePost = async transaction => {
-    const username = (await axios.get("/user")).data;
-    let body = "";
+const handleSharePost = async (transaction) => {
+  const username = (await axios.get("/user")).data;
+  let body = "";
 
-    if (transaction.amount < 0) {
-      body =
-        username +
-        " spent $" +
-        -transaction.amount +
-        " on " +
-        transaction.description +
-        ". (" +
-        transaction.category +
-        ")";
-    } else {
-      body =
-        username +
-        " received $" +
-        transaction.amount +
-        " from " +
-        transaction.description +
-        ". (" +
-        transaction.category +
-        ")";
-    }
+  if (transaction.amount < 0) {
+    body =
+      username +
+      " spent $" +
+      -transaction.amount +
+      " on " +
+      transaction.description +
+      ". (" +
+      transaction.category +
+      ")";
+  } else {
+    body =
+      username +
+      " received $" +
+      transaction.amount +
+      " from " +
+      transaction.description +
+      ". (" +
+      transaction.category +
+      ")";
+  }
 
-    await axios
-      .post("/addpost", {
-        date: new Date(),
-        transactionId: transaction._id,
-        body: body,
-      })
-      .then(res => {
-        toast.success("🦄 Successfully shared with followers!", toastConfig);
-        console.log(res);
-      });
-  };
+  await axios
+    .post("/addpost", {
+      date: new Date(),
+      transactionId: transaction._id,
+      body: body,
+    })
+    .then((res) => {
+      toast.success("🦄 Successfully shared with followers!", toastConfig);
+      console.log(res);
+    });
+};
 
-  const allTransactionsDisplay = allTransactions.map(transaction => (
+
+  const allTransactionsDisplay = allTransactions.map((transaction) => (
     <div key={transaction._id}>
       <ListItem>
         <ListItemAvatar>

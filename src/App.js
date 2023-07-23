@@ -12,7 +12,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/en-sg";
 import { Box } from "@mui/material";
-import './App.styles.css';
+import "./App.styles.css";
 
 export default function App() {
   return (
